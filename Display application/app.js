@@ -17,7 +17,7 @@ function setup(){
   createCanvas(400, 400);
   cols = floor(width/w);  //using floor function to ensure integer values for easy working
   rows = floor(height/w);
-  frameRate(5);
+  frameRate(10);
 
 
 
@@ -57,7 +57,25 @@ function draw(){
     current = next;
   }else if(stack.length > 0){
     current = stack.pop();
-  }
+  }else if(!next){
+    //location.reload();
+    //var milliseconds = 5000;
+    //function sleep(milliseconds) {
+      // const date = Date.now();
+      // let currentDate = null;
+      // do {
+      //   currentDate = Date.now();
+      // } while (currentDate - date < milliseconds);
+      //
+      // sleep(5000);
+      // location.reload();
+  //}
+  sleep(2000);
+  location.reload();
+}
+
+  //window.onload = timedRefresh(30000);
+  //location.reload();
 }
 
 function index(i, j){
@@ -162,4 +180,19 @@ function removeWalls(a, b){
     b.walls[0] = false;
   }
 
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+
+  //sleep(5000);
+  //location.reload();
+}
+
+function reloadPage(){
+  location.reload();
 }
