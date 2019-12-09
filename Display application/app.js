@@ -11,6 +11,8 @@ var grid = [];
 
 var current;//current cell being visited
 
+var stack = []; //use an array as a stack in JS push and pop are both useable with a stack
+
 function setup(){
   createCanvas(400, 400);
   cols = floor(width/w);  //using floor function to ensure integer values for easy working
@@ -39,16 +41,22 @@ function draw(){
   current.visited = true;
   current.highlight();
 
+  //steps to recursive backtracking algo
   //step 1
   var next = current.checkNeighbors();
   if(next){
     next.visited = true;
+
+    //step 2
+    stack.push(current);//push current cell to stack
 
     //step 3
     removeWalls(current, next);
 
     //step 4
     current = next;
+  }else if(stack.length > 0){
+    current = stack.pop();
   }
 }
 
