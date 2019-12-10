@@ -4,32 +4,32 @@
 //if I make a change then I should be able to commit it to github
 //above all worked so now to actually begin what I am here for.
 //I am going to start with a Depth-first search maze generator, possibly will add on to it later.
+//Link for the wikipedia for the algorithm used: https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker
 
-var cols, rows;
-var w = 40; //width/height of a cell is 40
-var grid = [];
+var cols, rows;   //variable for columns and rows of the maze
+var w = 40;       //width/height of a cell is 40
+var grid = [];    //array for the maze grid
 
-var current;//current cell being visited
+var current;      //current cell being visited
 
-var stack = []; //use an array as a stack in JS push and pop are both useable with a stack
+var stack = [];   //use an array as a stack in JS push and pop are both useable with a stack
 
 function setup(){
   createCanvas(1800, 800);
-  cols = floor(width/w);  //using floor function to ensure integer values for easy working
+                  //using floor function to ensure integer values for easy working
+  cols = floor(width/w);
   rows = floor(height/w);
+                  //use a static framerate for showing each step
   frameRate(10);
-
-
-
-for(var j = 0; j < rows; j++){
-  for(var i = 0; i < cols; i++){
-    var cell = new Cell(i, j);
-    grid.push(cell);
+                  //create the blank grid for the maze
+  for(var j = 0; j < rows; j++){
+    for(var i = 0; i < cols; i++){
+      var cell = new Cell(i, j);
+      grid.push(cell);
+    }
   }
-}
-
-current = grid[0];//start at the top left cell
-
+  current = grid[0];
+  //start at the top left cell
 }
 
 function draw(){
@@ -42,18 +42,18 @@ function draw(){
   current.highlight();
 
   //steps to recursive backtracking algo
-  //step 1
+  //step 1 push the current cell to the stack
   var next = current.checkNeighbors();
   if(next){
     next.visited = true;
 
-    //step 2
-    stack.push(current);//push current cell to stack
+    //step 2 push current cell to stack
+    stack.push(current);
 
-    //step 3
+    //step 3 remove the walls between the current cell and the chosen cell
     removeWalls(current, next);
 
-    //step 4
+    //step 4 mark the chosen cell as visited and push it to the stack
     current = next;
   }else if(stack.length > 0){
     current = stack.pop();
@@ -61,20 +61,22 @@ function draw(){
     sleep(2000);
     location.reload();
   }
-
 }
-
+//function used to determine the index of positions
 function index(i, j){
   if(i < 0 || j < 0 || i > cols - 1 || j > rows - 1 ){
     return -1;
   }
   return i + j * cols;
 }
-
-//I will be row number and j will be row number
+//i will be row number and j will be row number
+//cell function for defining what a cell is including walls and neighbors
 function Cell(i, j){
   this.i = i;
   this.j = j;
+  //create array for walls which holds which wall should exist and which should not
+  //initialize all walls to true, when the cell is determined to have walls then the walls will be set to false based on which way
+  //the cell was entered
   this.walls = [true, true, true, true];
   this.visited = false;
 
@@ -82,6 +84,7 @@ function Cell(i, j){
     var neighbors = [];
 
     //var index = i + (j - 1) * cols;
+    //from current position the cells adjacent have these indeces
     var top = grid[index(i, j - 1)];
     var right = grid[index(i + 1, j)];
     var bottom = grid[index(i, j + 1)];
@@ -100,14 +103,12 @@ function Cell(i, j){
     if(left && !left.visited){
       neighbors.push(left);
     }
-
     if(neighbors.length > 0){
       var r = floor(random(0, neighbors.length));
       return neighbors[r];
     }else{
       return undefined;
     }
-
   }
 
   this.highlight = function(){
@@ -168,6 +169,7 @@ function removeWalls(a, b){
 
 }
 
+//Sleep function that I use for pausing before page refresh so people can see the full maze.
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
@@ -179,6 +181,7 @@ function sleep(milliseconds) {
   //location.reload();
 }
 
+//function for reloading the page just in case.
 function reloadPage(){
   location.reload();
 }
