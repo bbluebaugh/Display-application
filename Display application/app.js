@@ -14,7 +14,7 @@ var current;//current cell being visited
 var stack = []; //use an array as a stack in JS push and pop are both useable with a stack
 
 function setup(){
-  createCanvas(400, 400);
+  createCanvas(1800, 800);
   cols = floor(width/w);  //using floor function to ensure integer values for easy working
   rows = floor(height/w);
   frameRate(10);
@@ -58,24 +58,10 @@ function draw(){
   }else if(stack.length > 0){
     current = stack.pop();
   }else if(!next){
-    //location.reload();
-    //var milliseconds = 5000;
-    //function sleep(milliseconds) {
-      // const date = Date.now();
-      // let currentDate = null;
-      // do {
-      //   currentDate = Date.now();
-      // } while (currentDate - date < milliseconds);
-      //
-      // sleep(5000);
-      // location.reload();
-  //}
-  sleep(2000);
-  location.reload();
-}
+    sleep(2000);
+    location.reload();
+  }
 
-  //window.onload = timedRefresh(30000);
-  //location.reload();
 }
 
 function index(i, j){
